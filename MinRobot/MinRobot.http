@@ -1,0 +1,6 @@
+@MinRobot_HostAddress = http://localhost:5127
+
+GET {{MinRobot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
