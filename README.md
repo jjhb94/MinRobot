@@ -19,7 +19,8 @@ factories/ repository pattern. Configure this connection in the appsettings.json
 ### DATA for DB:
 - right now we inserted this into the psql:
 
-``` CREATE TABLE robot_statuses (
+``` 
+CREATE TABLE robot_statuses (
     robot_id VARCHAR(10) PRIMARY KEY,
     status VARCHAR(50),
     battery_level INT,
