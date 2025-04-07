@@ -24,8 +24,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IGenericDbConnectionFactory>(provider =>
             new PostgreSqlDbConnectionFactory(connectionString));
 
-        services.AddScoped<IRobotStatusRepository, PostgreSqlRobotStatusRepository>();
-
         // Register RobotStatusRepository
         services.AddScoped<IRobotStatusRepository, PostgreSqlRobotStatusRepository>();
 

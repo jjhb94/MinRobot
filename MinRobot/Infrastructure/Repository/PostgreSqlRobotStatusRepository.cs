@@ -19,14 +19,32 @@ public class PostgreSqlRobotStatusRepository : IRobotStatusRepository
     public async Task<IEnumerable<RobotStatus>> GetAllStatusesAsync(CancellationToken cancellationToken)
     {
         using var db = await _connectionFactory.CreateConnectionAsync(cancellationToken);
-        return await db.QueryAsync<RobotStatus>("SELECT * FROM robot_statuses");
+        return await db.QueryAsync<RobotStatus>(@"
+                SELECT 
+                    robot_id AS RobotId, 
+                    status AS Status, 
+                    battery_level AS BatteryLevel, 
+                    uptime AS Uptime, 
+                    last_updated AS LastUpdated, 
+                    position_x AS PositionX, 
+                    position_y AS PositionY 
+                FROM robot_statuses");
     }
 
     public async Task<RobotStatus?> GetRobotStatusByIdAsync(string robotId, CancellationToken cancellationToken)
     {
         using var db = await _connectionFactory.CreateConnectionAsync(cancellationToken);
-        return await db.QueryFirstOrDefaultAsync<RobotStatus>(
-            "SELECT * FROM robot_statuses WHERE robot_id = @RobotId", new { RobotId = robotId });
+        return await db.QueryFirstOrDefaultAsync<RobotStatus>(@"
+                SELECT 
+                    robot_id AS RobotId, 
+                    status AS Status, 
+                    battery_level AS BatteryLevel, 
+                    uptime AS Uptime, 
+                    last_updated AS LastUpdated, 
+                    position_x AS PositionX, 
+                    position_y AS PositionY 
+                FROM robot_statuses 
+                WHERE robot_id ILIKE @RobotId", new { RobotId = robotId });
     }
 
     public async Task AddRobotStatusAsync(RobotStatus status, CancellationToken cancellationToken)

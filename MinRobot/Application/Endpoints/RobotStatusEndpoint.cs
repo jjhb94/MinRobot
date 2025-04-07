@@ -69,6 +69,7 @@ public static class RobotStatusEndpoint
     {
         try
         {
+            // TODO: maybe use var robotLower = robotId.ToLower(); and then pass as parameter to ignore case sensitivity
             var robot = await db.GetRobotStatusByIdAsync(robotId, cancellation);
             if (robot == null)
             {
