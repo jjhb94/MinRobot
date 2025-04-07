@@ -1,5 +1,6 @@
+using System.Net;
 using MinRobot.Domain.Models;
-using MinRobot.Application;
+using MinRobot.Application.Dto;
 
 namespace MinRobot.Application.Endpoints;
 
@@ -17,19 +18,90 @@ public static class RobotStatusEndpoint
     {
         var group = app.MapGroup("/api/status");
 
-        group.MapGet("/", async (DatabaseService db, CancellationToken cancellation) =>
+        group.MapGet("/", GetAllRobotStatusesAsync);
+        group.MapGet("/{robotId}", GetRobotStatusByIdAsync);
+
+        // group.MapGet("/", async (DatabaseService db, CancellationToken cancellation) =>
+        // {
+        //     var robots = await db.GetAllStatusesAsync(cancellation);
+        //     return Results.Ok(robots);
+        // });
+
+        // // TODO: one thing I don't like is the robotId as string, this should be stricter in type or some kind of guid like property / key value property
+        // // for faster lookups and restrictions on what can be sent. 
+        // group.MapGet("/{robotId}", async (string robotId, DatabaseService db, CancellationToken cancellation) =>
+        // {
+        //     var robot = await db.GetRobotStatusByIdAsync(robotId, cancellation);
+        //     return Results.Ok(robot);
+        // });
+    }
+
+    private static async Task<IResult> GetAllRobotStatusesAsync(DatabaseService db, CancellationToken cancellation)
+    {
+        try
         {
             var robots = await db.GetAllStatusesAsync(cancellation);
-            return Results.Ok(robots);
-        });
+            if (!robots.Any())
+            {
+                return Results.NotFound(new RobotStatusResponse<List<RobotStatus>>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No robot statuses found." }
+                });
+            }
 
-        // TODO: one thing I don't like is the robotId as string, this should be stricter in type or some kind of guid like property / key value property
-        // for faster lookups and restrictions on what can be sent. 
-        group.MapGet("/{robotId}", async (string robotId, DatabaseService db, CancellationToken cancellation) =>
+            return Results.Ok(new RobotStatusResponse<List<RobotStatus>>
+            {
+                Data = robots.ToList(),
+                ItemCount = robots.Count(),
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK
+            });
+        }
+        catch (Exception ex)
+        {
+            return HandleException("An error occurred while retrieving robot statuses.", ex);
+        }
+    }
+
+    private static async Task<IResult> GetRobotStatusByIdAsync(string robotId, DatabaseService db, CancellationToken cancellation)
+    {
+        try
         {
             var robot = await db.GetRobotStatusByIdAsync(robotId, cancellation);
-            return Results.Ok(robot);
-        });
+            if (robot == null)
+            {
+                return Results.NotFound(new RobotStatusResponse<RobotStatus>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { $"Robot with ID {robotId} not found." }
+                });
+            }
+
+            return Results.Ok(new RobotStatusResponse<RobotStatus>
+            {
+                Data = robot,
+                ItemCount = 1,
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK
+            });
+        }
+        catch (Exception ex)
+        {
+            return HandleException($"An error occurred while retrieving the status for robot ID {robotId}.", ex);
+        }
+    }
+
+    private static IResult HandleException(string message, Exception ex)
+    {
+        return Results.Problem(new RobotStatusResponse<string>
+        {
+            IsSuccess = false,
+            StatusCode = HttpStatusCode.InternalServerError,
+            ErrorMessages = new List<string> { message, ex.Message }
+        }.ErrorMessages.FirstOrDefault(), statusCode: (int)HttpStatusCode.InternalServerError);
     }
 
 }
