@@ -25,6 +25,7 @@ builder.Services.AddCors(options =>
 Console.WriteLine($"[DEBUG] Postgres connection string: {builder.Configuration.GetConnectionString("PostgreSqlConnection")}");
 
 builder.Services.AddApplicationServices(builder.Configuration);
+
 var app = builder.Build();
 
 app.UseCors();
