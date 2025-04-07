@@ -17,7 +17,10 @@ a postgreSQL db is utilized in this application related to the Domain Interfaces
 factories/ repository pattern. Configure this connection in the appsettings.json
 
 ### DATA for DB:
-- right now we inserted this into the psql:
+- create a db for psql called robotdb ( can be named anything )
+https://www.youtube.com/watch?v=KuQUNHCeKCk
+- create user and password - 
+- inserted this into the psql:
 
 ``` 
 CREATE TABLE robot_statuses (
@@ -30,3 +33,5 @@ CREATE TABLE robot_statuses (
     position_y DECIMAL
 );
 ```
+
+update your appsettings with the db connection! 
