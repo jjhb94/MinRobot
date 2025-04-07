@@ -9,9 +9,9 @@ namespace MinRobot.Infrastructure.Repository;
 
 public class PostgreSqlRobotStatusRepository : IRobotStatusRepository
 {
-    private readonly PostgreSqlDbConnectionFactory _connectionFactory;
+    private readonly IGenericDbConnectionFactory _connectionFactory;
 
-    public PostgreSqlRobotStatusRepository(PostgreSqlDbConnectionFactory connectionFactory)
+    public PostgreSqlRobotStatusRepository(IGenericDbConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }

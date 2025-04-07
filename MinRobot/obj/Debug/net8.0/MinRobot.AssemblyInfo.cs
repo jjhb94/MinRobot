@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MinRobot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6704965dba0bcf8f623d176ee5abcc0a99621a16")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+75f81dc00a3f621a3fa8baf74c1bdf374a5353fa")]
 [assembly: System.Reflection.AssemblyProductAttribute("MinRobot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MinRobot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

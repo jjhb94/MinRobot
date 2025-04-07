@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Get connection string from appsettings.json
-        string? connectionString = configuration.GetConnectionString("PostgresConnection");
+        string? connectionString = configuration.GetConnectionString("PostgreSqlConnection");
 
         if (string.IsNullOrEmpty(connectionString))
         {
@@ -21,7 +21,10 @@ public static class ServiceCollectionExtensions
         }
 
         // Register PostgreSqlDbConnectionFactory with the connection string
-        services.AddScoped<IGenericDbConnectionFactory>(provider => new PostgreSqlDbConnectionFactory(connectionString));
+        services.AddScoped<IGenericDbConnectionFactory>(provider =>
+            new PostgreSqlDbConnectionFactory(connectionString));
+
+        services.AddScoped<IRobotStatusRepository, PostgreSqlRobotStatusRepository>();
 
         // Register RobotStatusRepository
         services.AddScoped<IRobotStatusRepository, PostgreSqlRobotStatusRepository>();
