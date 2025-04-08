@@ -27,21 +27,29 @@ public class DatabaseService
         return await _robotStatusRepository.GetRobotStatusByIdAsync(robotId, cancellationToken);
     }
 
-    // Insert a robot status (for seeding or new robots)
-    public async Task AddRobotStatusAsync(RobotStatus status, CancellationToken cancellationToken)
+    // Insert a robot status (for seeding or new robots) // not implemented
+    // public async Task AddRobotStatusAsync(RobotStatus status, CancellationToken cancellationToken)
+    // {
+    //     await _robotStatusRepository.AddRobotStatusAsync(status, cancellationToken);
+    // }
+
+    private async Task UpdateRobotLastUpdated(string robotId, CancellationToken cancellationToken)
     {
-        await _robotStatusRepository.AddRobotStatusAsync(status, cancellationToken);
+        await _robotStatusRepository.UpdateRobotLastUpdatedAsync(robotId, DateTime.UtcNow, cancellationToken);
     }
     
     // TODO: for larger applications Create Service folder and put break services up
     public async Task<int> AddRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
     {
-        return await _robotCommandRepository.AddRobotCommandAsync(command, cancellationToken);
+        var commandId = await _robotCommandRepository.AddRobotCommandAsync(command, cancellationToken);
+        await UpdateRobotLastUpdated(command.RobotId, cancellationToken); // Add this
+        return commandId;
     }
 
     public async Task UpdateRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
     {
         await _robotCommandRepository.UpdateRobotCommandAsync(command, cancellationToken);
+        await UpdateRobotLastUpdated(command.RobotId, cancellationToken);
     }
 
     public async Task<RobotCommand?> GetRobotCommandByIdAsync(int commandId, CancellationToken cancellationToken)

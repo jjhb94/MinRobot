@@ -10,7 +10,7 @@ public static class RobotCommandEndpoints
     {
         var group = app.MapGroup("/api/command");
 
-        group.MapPost("/", PostRobotCommandAsync);
+        group.MapPost("/", PostRobotCommandAsync); // send a movement or command // i.e. one of the Robot
         group.MapPut("/{commandId}", PutRobotCommandAsync);
         group.MapGet("/{commandId}", GetRobotCommandAsync);
     }
@@ -19,19 +19,35 @@ public static class RobotCommandEndpoints
     {
         try
         {
-            // Map RobotCommandDto to RobotCommand (if necessary)
-            var command = new RobotCommand
+            var (command, errorResult) = EndpointUtilities.ValidateAndMapCommand(null, commandDto);
+            if (errorResult != null) return errorResult;
+
+            // handle rotation commands
+            if (command.CommandType.ToLower().StartsWith("rotate("))
             {
-                RobotId = commandDto.RobotId.ToUpper(),
-                CommandType = commandDto.CommandType,
-                CommandData = commandDto.CommandData,
-                CreatedAt = DateTime.UtcNow,
-                Status = "pending", // TODO: commandStatusEnum maybe use that here and udpate the RobotCommand model
-                //  // Optional, set to null initially
-            };
-            // Save the command to the database
+                // Extract the degree value
+                string degreesString = command.CommandType.Substring(7, command.CommandType.Length - 8); // Remove "Rotate(" and ")"
+                if (double.TryParse(degreesString, out double degrees))
+                {
+                    // Store the degrees in the command data or a new field
+                    command.CommandData = $"Degrees:{degrees}"; // Store in command data for example
+                    command.CommandType = "Rotate"; // Store generic rotate command.
+                }
+                else
+                {
+                    return Results.BadRequest(new RobotCommandResponse<RobotCommand>
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = new List<string> { "Invalid rotation degrees." }
+                    });
+                }
+            }
+
+
             var commandId = await db.AddRobotCommandAsync(command, cancellation);
-            command.CommandId = commandId; // Set the CommandId after insertion
+            command.CommandId = commandId;
+
             return Results.Created($"/api/command/{command.CommandId}", new RobotCommandResponse<RobotCommand>
             {
                 Data = command,
@@ -41,7 +57,7 @@ public static class RobotCommandEndpoints
         }
         catch (Exception ex)
         {
-            return EndpointUtilities.HandleException("An error occurred while adding the command.", ex);
+            return EndpointUtilities.HandleException("An error occurred while adding the command. Does the command match expected?", ex);
         }
     }
 
@@ -49,19 +65,9 @@ public static class RobotCommandEndpoints
     {
         try
         {
-            // Map RobotCommandDto to RobotCommand (if necessary)
-            var command = new RobotCommand
-            {
-                CommandId = commandId,
-                RobotId = commandDto.RobotId,
-                CommandType = commandDto.CommandType,
-                CommandData = commandDto.CommandData,
-                CreatedAt = DateTime.UtcNow, 
-                // Optional, set to null initially
-                Status = "pending" // TODO: commandStatusEnum maybe use that here and udpate the RobotCommand model
-            };
+            var (command, errorResult) = EndpointUtilities.ValidateAndMapCommand(commandId, commandDto);
+            if (errorResult != null) return errorResult;
 
-            // Update the command in the database
             await db.UpdateRobotCommandAsync(command, cancellation);
 
             return Results.Ok(new RobotCommandResponse<RobotCommand>
@@ -81,6 +87,9 @@ public static class RobotCommandEndpoints
     {
         try
         {
+            var validationResult = EndpointUtilities.ValidateCommandId(commandId);
+            if (validationResult != null) return validationResult;
+
             var command = await db.GetRobotCommandByIdAsync(commandId, cancellation);
 
             if (command == null)

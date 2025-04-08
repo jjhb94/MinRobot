@@ -21,7 +21,7 @@ public class PostgreSqlRobotStatusRepository : IRobotStatusRepository
                     robot_id AS RobotId, 
                     status AS Status, 
                     battery_level AS BatteryLevel, 
-                    uptime AS Uptime, 
+                    uptime AS UptimeSeconds, 
                     last_updated AS LastUpdated, 
                     position_x AS PositionX, 
                     position_y AS PositionY 
@@ -36,7 +36,7 @@ public class PostgreSqlRobotStatusRepository : IRobotStatusRepository
                     robot_id AS RobotId, 
                     status AS Status, 
                     battery_level AS BatteryLevel, 
-                    uptime AS Uptime, 
+                    uptime AS uptimeSeconds, 
                     last_updated AS LastUpdated, 
                     position_x AS PositionX, 
                     position_y AS PositionY 
@@ -49,7 +49,13 @@ public class PostgreSqlRobotStatusRepository : IRobotStatusRepository
         using var db = await _connectionFactory.CreateConnectionAsync(cancellationToken);
         await db.ExecuteAsync(
             "INSERT INTO robot_statuses (robot_id, status, battery_level, uptime, last_updated, position_x, position_y) " +
-            "VALUES (@RobotId, @Status, @BatteryLevel, @Uptime, @LastUpdated, @PositionX, @PositionY)",
+            "VALUES (@RobotId, @Status, @BatteryLevel, @UptimeSeconds, @LastUpdated, @PositionX, @PositionY)",
             status);
+    }
+
+    public async Task UpdateRobotLastUpdatedAsync(string robotId, DateTime lastUpdated, CancellationToken cancellationToken)
+    {
+        using var db = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+        await db.ExecuteAsync("UPDATE robot_statuses SET last_updated = @LastUpdated WHERE robot_id = @RobotId", new { RobotId = robotId, LastUpdated = lastUpdated });
     }
 }

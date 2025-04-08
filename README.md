@@ -43,7 +43,8 @@ CREATE TABLE robot_commands (
     command_data TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL,
     status VARCHAR(50) NOT NULL,
-    error_message TEXT
+    error_message TEXT,
+	command_degrees DOUBLE PRECISION
 );
 
 -- Add the check constraint for command_type:
@@ -60,7 +61,8 @@ CHECK (command_type IN (
     'PickUpItem',
     'DropItem',
     'ScanArea',
-    'ReportStatus'
+    'ReportStatus',
+    'Rotate'
 ));
 
 -- Grant permissions to the robot_user:

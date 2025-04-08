@@ -19,6 +19,15 @@ public static class RobotHistoryEndpoint
         try
         {
             var history = await db.GetRobotCommandHistoryAsync(robotId.ToUpper(), cancellation);
+            if (history == null || !history.Any()) // Check if history is null or empty
+            {
+                return Results.Ok(new RobotCommandHistoryResponse<IEnumerable<RobotCommandHistoryDto>>
+                {
+                    Data = null, // Return null if no history found
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.OK
+                });
+            }
             var dtoHistory = history.Select(h => new RobotCommandHistoryDto
             {
                 CommandId = h.CommandId,
