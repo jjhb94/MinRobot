@@ -37,11 +37,13 @@ public static class RobotCommandEndpoints
             {
                 // Extract the degree value
                 string degreesString = command.CommandType.Substring(7, command.CommandType.Length - 8); // Remove "Rotate(" and ")"
+                //Console.WriteLine($"Degrees String: {degreesString}"); // Debugging line
                 if (double.TryParse(degreesString, out double degrees))
                 {
                     // Store the degrees in the command data or a new field
                     command.CommandData = $"Degrees:{degrees}"; // Store in command data for example
                     command.CommandType = "Rotate"; // Store generic rotate command.
+                    command.Degrees = degrees;
                 }
                 else
                 {
