@@ -1,9 +1,6 @@
 using Dapper;
 using MinRobot.Domain.Interfaces;
 using MinRobot.Domain.Models;
-using MinRobot.Infrastructure.Factories;
-using System.Data;
-using System.Threading.Tasks;
 
 namespace MinRobot.Infrastructure.Repository;
 
@@ -44,7 +41,7 @@ public class PostgreSqlRobotStatusRepository : IRobotStatusRepository
                     position_x AS PositionX, 
                     position_y AS PositionY 
                 FROM robot_statuses 
-                WHERE robot_id ILIKE @RobotId", new { RobotId = robotId });
+                WHERE robot_id = @RobotId", new { RobotId = robotId });
     }
 
     public async Task AddRobotStatusAsync(RobotStatus status, CancellationToken cancellationToken)
