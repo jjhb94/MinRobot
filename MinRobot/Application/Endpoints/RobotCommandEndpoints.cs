@@ -33,7 +33,6 @@ public static class RobotCommandEndpoints
                 Status = "pending", // TODO: commandStatusEnum maybe use that here and udpate the RobotCommand model
                 //  // Optional, set to null initially
             };
-            Console.WriteLine($"Testing the ether: {command}");
             // Save the command to the database
             await db.AddRobotCommandAsync(command, cancellation);
 
