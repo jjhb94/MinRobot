@@ -34,4 +34,52 @@ CREATE TABLE robot_statuses (
 );
 ```
 
+```
+-- Create the robot_commands table:
+CREATE TABLE robot_commands (
+    command_id SERIAL PRIMARY KEY,
+    robot_id VARCHAR(255) NOT NULL,
+    command_type VARCHAR(255) NOT NULL,
+    command_data TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    error_message TEXT
+);
+
+-- Add the check constraint for command_type:
+ALTER TABLE robot_commands
+ADD CONSTRAINT chk_command_type
+CHECK (command_type IN (
+    'MoveForward',
+    'MoveBackward',
+    'TurnLeft',
+    'TurnRight',
+    'Stop',
+    'StartCharging',
+    'StopCharging',
+    'PickUpItem',
+    'DropItem',
+    'ScanArea',
+    'ReportStatus'
+));
+
+-- Grant permissions to the robot_user:
+GRANT SELECT, INSERT, UPDATE, DELETE ON robot_commands TO robot_user;
+
+-- Grant permissions on the sequence (if command_id is SERIAL):
+GRANT USAGE, SELECT ON SEQUENCE robot_commands_command_id_seq TO robot_user;
+
+-- Verify the table structure:
+\d robot_commands;
+
+-- Verify the check constraint:
+SELECT pg_get_constraintdef(oid)
+FROM pg_constraint
+WHERE conname = 'chk_command_type';
+
+-- Verify the user permissions:
+\dp robot_commands;
+```
+
+
 update your appsettings with the db connection! 
