@@ -1,16 +1,19 @@
 using MinRobot.Domain.Models;
 using MinRobot.Domain.Interfaces;
+using MinRobot.Application.Dto;
 namespace MinRobot.Application;
 
 public class DatabaseService
 {
     private readonly IRobotStatusRepository _robotStatusRepository;
     private readonly IRobotCommandRepository _robotCommandRepository;
+    private readonly IRobotHisotryRepository _robotHistoryRepository;
 
-    public DatabaseService(IRobotStatusRepository robotStatusRepository, IRobotCommandRepository robotCommandRepository)
+    public DatabaseService(IRobotStatusRepository robotStatusRepository, IRobotCommandRepository robotCommandRepository, IRobotHisotryRepository robotHistoryRepository)
     {
         _robotCommandRepository = robotCommandRepository;
         _robotStatusRepository = robotStatusRepository;
+        _robotHistoryRepository = robotHistoryRepository;
     }
 
     public async Task<IEnumerable<RobotStatus>> GetAllStatusesAsync(CancellationToken cancellationToken)
@@ -44,6 +47,12 @@ public class DatabaseService
     public async Task<RobotCommand?> GetRobotCommandByIdAsync(int commandId, CancellationToken cancellationToken)
     {
         return await _robotCommandRepository.GetRobotCommandByIdAsync(commandId, cancellationToken);
+    }
+
+    // history!
+    public async Task<IEnumerable<RobotCommandHistoryDto>> GetRobotCommandHistoryAsync(string robotId, CancellationToken cancellationToken)
+    {
+        return await _robotHistoryRepository.GetRobotCommandHistoryAsync(robotId, cancellationToken);
     }
 
 }

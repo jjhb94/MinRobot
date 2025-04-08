@@ -1,8 +1,7 @@
 namespace MinRobot.Application.Dto;
-
-public class RobotCommandDto
+public class RobotCommandHistoryDto
 {
-    public string RobotId { get; set; } = default!;
+    public int CommandId { get; set; }
     public string CommandType { get; set; } = default!;
     public string CommandData { get; set; } = default!;
 }

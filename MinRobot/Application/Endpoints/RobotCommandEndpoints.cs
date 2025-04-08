@@ -1,9 +1,5 @@
-// MinRobot.Application/Endpoints/RobotCommandEndpoints.cs
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using MinRobot.Application.Dto;
-using MinRobot.Domain.Models;
+using MinRobot.Api.Utilities; 
 using System.Net;
 
 namespace MinRobot.Application.Endpoints;
@@ -45,7 +41,7 @@ public static class RobotCommandEndpoints
         }
         catch (Exception ex)
         {
-            return HandleException("An error occurred while adding the command.", ex);
+            return EndpointUtilities.HandleException("An error occurred while adding the command.", ex);
         }
     }
 
@@ -77,7 +73,7 @@ public static class RobotCommandEndpoints
         }
         catch (Exception ex)
         {
-            return HandleException($"An error occurred while updating command ID {commandId}.", ex);
+            return EndpointUtilities.HandleException($"An error occurred while updating command ID {commandId}.", ex);
         }
     }
 
@@ -106,17 +102,7 @@ public static class RobotCommandEndpoints
         }
         catch (Exception ex)
         {
-            return HandleException($"An error occurred while retrieving command ID {commandId}.", ex);
+            return EndpointUtilities.HandleException($"An error occurred while retrieving command ID {commandId}.", ex);
         }
-    }
-
-    private static IResult HandleException(string message, Exception ex)
-    {
-        return Results.Problem(new RobotCommandResponse<string>
-        {
-            IsSuccess = false,
-            StatusCode = HttpStatusCode.InternalServerError,
-            ErrorMessages = new List<string> { message, ex.ToString() }
-        }.ErrorMessages.FirstOrDefault(), statusCode: (int)HttpStatusCode.InternalServerError);
     }
 }

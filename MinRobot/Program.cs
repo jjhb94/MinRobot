@@ -40,6 +40,7 @@ app.UseHttpsRedirection();
 
 app.MapRobotStatusEndpoints(); // use extensions here to add endpoints! enhances readability
 app.MapRobotCommandEndpoints(); // use extensions here to add endpoints! enhances readability
+app.MapRobotHistoryEndpoint(); // use extensions here to add endpoints! enhances readability
 app.Run();
 
 // record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

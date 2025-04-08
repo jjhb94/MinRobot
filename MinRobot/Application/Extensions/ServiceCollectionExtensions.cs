@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRobotStatusRepository, PostgreSqlRobotStatusRepository>();
         // Register RobotCommandRepository
         services.AddScoped<IRobotCommandRepository, PostgreSqlRobotCommandRepository>();
+        services.AddScoped<IRobotHisotryRepository, PostgreSqlRobotHistoryRepository>();
         // Register DatabaseService
         services.AddScoped<DatabaseService>();
 
