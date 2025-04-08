@@ -2,15 +2,15 @@ namespace MinRobot.Domain.Models;
 
 public enum CommandTypeEnum
 {
-    MoveForward,
-    MoveBackward,
-    TurnLeft,
-    TurnRight,
-    Stop,
-    StartCharging,
-    StopCharging,
-    PickUpItem,
-    DropItem,
-    ScanArea,
-    ReportStatus
+    MOVEFORWARD,
+    MOVEBACKWARD,
+    TURNLEFT,
+    TURNRIGHT,
+    STOP,
+    STARTCHARGING,
+    STOPCHARGING,
+    PICKUPITEM,
+    DROPITEM,
+    SCANAREA,
+    REPORTSTATUS
 }
