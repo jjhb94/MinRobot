@@ -34,8 +34,8 @@ public static class RobotCommandEndpoints
                 //  // Optional, set to null initially
             };
             // Save the command to the database
-            await db.AddRobotCommandAsync(command, cancellation);
-
+            var commandId = await db.AddRobotCommandAsync(command, cancellation);
+            command.CommandId = commandId; // Set the CommandId after insertion
             return Results.Created($"/api/command/{command.CommandId}", new RobotCommandResponse<RobotCommand>
             {
                 Data = command,
@@ -60,8 +60,9 @@ public static class RobotCommandEndpoints
                 RobotId = commandDto.RobotId,
                 CommandType = commandDto.CommandType,
                 CommandData = commandDto.CommandData,
-                CreatedAt = DateTime.UtcNow,
-                Status = "Pending" // TODO: commandStatusEnum maybe use that here and udpate the RobotCommand model
+                CreatedAt = DateTime.UtcNow, 
+                // Optional, set to null initially
+                Status = "pending" // TODO: commandStatusEnum maybe use that here and udpate the RobotCommand model
             };
 
             // Update the command in the database

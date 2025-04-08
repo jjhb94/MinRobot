@@ -31,9 +31,9 @@ public class DatabaseService
     }
     
     // TODO: for larger applications Create Service folder and put break services up
-    public async Task AddRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
+    public async Task<int> AddRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
     {
-        await _robotCommandRepository.AddRobotCommandAsync(command, cancellationToken);
+        return await _robotCommandRepository.AddRobotCommandAsync(command, cancellationToken);
     }
 
     public async Task UpdateRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
