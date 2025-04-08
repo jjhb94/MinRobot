@@ -36,7 +36,7 @@ public static class RobotStatusEndpoint
         // });
     }
 
-    private static async Task<IResult> GetAllRobotStatusesAsync(DatabaseService db, CancellationToken cancellation)
+    public static async Task<IResult> GetAllRobotStatusesAsync(DatabaseService db, CancellationToken cancellation)
     {
         try
         {
@@ -65,7 +65,7 @@ public static class RobotStatusEndpoint
         }
     }
 
-    private static async Task<IResult> GetRobotStatusByIdAsync(string robotId, DatabaseService db, CancellationToken cancellation)
+    public static async Task<IResult> GetRobotStatusByIdAsync(string robotId, DatabaseService db, CancellationToken cancellation)
     {
         try
         {
@@ -95,7 +95,7 @@ public static class RobotStatusEndpoint
         }
     }
 
-    private static IResult HandleException(string message, Exception ex)
+    public static IResult HandleException(string message, Exception ex)
     {
         return Results.Problem(new RobotStatusResponse<string>
         {

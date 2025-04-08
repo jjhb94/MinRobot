@@ -14,7 +14,7 @@ public static class RobotHistoryEndpoint
         group.MapGet("/{robotId}", GetRobotHistoryAsync);
     }
 
-    private static async Task<IResult> GetRobotHistoryAsync(string robotId, DatabaseService db, CancellationToken cancellation)
+    public static async Task<IResult> GetRobotHistoryAsync(string robotId, DatabaseService db, CancellationToken cancellation)
     {
         try
         {

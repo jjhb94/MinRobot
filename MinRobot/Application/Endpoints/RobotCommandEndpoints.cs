@@ -19,6 +19,16 @@ public static class RobotCommandEndpoints
     {
         try
         {
+            if (!EndpointUtilities.IsValidRobotId(commandDto.RobotId))
+            {
+                return Results.BadRequest(new RobotCommandResponse<RobotCommand>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = new List<string> { "Invalid RobotId format. Expected format: 'TX-123'." }
+                });
+            }
+
             var (command, errorResult) = EndpointUtilities.ValidateAndMapCommand(null, commandDto);
             if (errorResult != null) return errorResult;
 
@@ -65,6 +75,16 @@ public static class RobotCommandEndpoints
     {
         try
         {
+            if (!EndpointUtilities.IsValidRobotId(commandDto.RobotId))
+            {
+                return Results.BadRequest(new RobotCommandResponse<RobotCommand>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = new List<string> { "Invalid RobotId format. Expected format: 'TX-123'." }
+                });
+            }
+
             var (command, errorResult) = EndpointUtilities.ValidateAndMapCommand(commandId, commandDto);
             if (errorResult != null) return errorResult;
 

@@ -67,4 +67,9 @@ public static class EndpointUtilities
         }
         return null!;
     }
+    public static bool IsValidRobotId(string robotId)
+    {
+        // Ensure RobotId matches the format "TX-123"
+        return !string.IsNullOrEmpty(robotId) && System.Text.RegularExpressions.Regex.IsMatch(robotId, @"^[A-Z]{2}-\d+$");
+    }
 }
