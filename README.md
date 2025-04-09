@@ -16,6 +16,49 @@ Endpoints Folder contains endpoint extensions with routes i.e. `base = /api ; ap
 a postgreSQL db is utilized in this application related to the Domain Interfaces / Infrastructure
 factories/ repository pattern. Configure this connection in the appsettings.json
 
+### Docker (MongoDb)
+- make sure you have docker running (desktop or WSL2)
+- go to the directory where the docker-compose.yml file is ex: if rootRepo/docker-compose.yml, cd rootRepo
+- docker-compose -up -d
+- this will pull the latest mongodo image and create a container / volume
+
+#### Initialize MongoDb with data and users
+```
+db.createUser({
+  user: "robot_user",
+  pwd: "robotlife",
+  roles: [{ role: "readWrite", db: "minrobot_db" }],
+});
+
+db.createCollection("robot_statuses");
+db.robot_statuses.insertMany([
+  {
+    robotId: "TX-010",
+    status: "Online",
+    batteryLevel: 95.5,
+    uptime: 3600,
+    lastUpdated: new Date(),
+    position: { x: 10.5, y: 0 }
+  },
+  {
+    robotId: "TX-027",
+    status: "Offline",
+    batteryLevel: 10.0,
+    uptime: 0,
+    lastUpdated: new Date(),
+    position: { x: 10.5, y: 25.0 }
+  },
+  {
+    robotId: "TX-042",
+    status: "Online",
+    batteryLevel: 88.0,
+    uptime: 123456,
+    lastUpdated: new Date(),
+    position: { x: 5.0, y: 15.0 }
+  },
+]);
+```
+
 ### DATA for DB:
 - create a db for psql called robotdb ( can be named anything )
 https://www.youtube.com/watch?v=KuQUNHCeKCk
