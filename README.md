@@ -22,14 +22,38 @@ factories/ repository pattern. Configure this connection in the appsettings.json
 - docker-compose -up -d
 - this will pull the latest mongodo image and create a container / volume
 
-#### Initialize MongoDb with data and users
+#### Initialize MongoDb (Docker) with data and users
+- Go to the root of this repo and run `docker-compose up -d
+- After the above docker-compose completes running use `docker ps` to see the `id` of the container
+- then run this `docker exec -it <container_name_or_ID> mongosh` or "`docker exec -it fa7f40339e08 mongosh "mongodb://root:yourStrongPassword@fa7f40339e08:27017/admin"` (making sure you have mongosh the shell client installed)
+- this will take you to the mongosh shell / termninal where you run the following:
+`use minrobot_db` or the db you wish to connect to
+`show users`  depending on this output maybe the user was not created in the script ( first time really setting this up in mongodb!!)
+`db.getUser(robot_user)` or other username as parameter
+- depeding on the output, the user will most likely not exist.
+#### Create user: 
+```
+db.createUser({
+  user: "robot_user",
+  pwd: "robotlife",
+  roles: [{ role: "readWrite", db: "minrobot_db" }],
+  mechanisms: ["SCRAM-SHA-256"] // Specify SCRAM-SHA-256
+});
+```
+again, run`show users` and you should see output.
+If you run 
+`db.robot_commands.find()` or `db.robot_history.find()` or `db.robot_history.find()`
+and you don't see anything, there is not data!!
+
+#### Create Data
+
 ```
 // 1. Create User
 use admin; // Switch to the admin database for user creation
 db.createUser({
   user: "robot_user",
   pwd: "robotlife",
-  roles: [{ role: "readWrite", db: "minrobot_db" }]
+  roles: [{ role: "readWrite", db: "admin" }]
 });
 
 // 2. Create Database and Collections
@@ -70,10 +94,17 @@ db.robot_statuses.insertMany([
     positionY: 15
   }
 ]);
+```
+run `db.robot_statuses.find()` or `db.robot_statuses.find().pretty()`
+make sure there is data in the table! and specifally an _id!
 
+```
 // Create robot_commands collection and insert data
 db.createCollection("robot_commands");
-db.robot_commands.insertOne({
+```
+Insert into robot_commands and capture the _id
+```
+let commandResult = db.robot_commands.insertOne({
   robotId: "TX-042",
   commandType: "Rotate",
   commandData: "x:10, y:25",
@@ -82,20 +113,56 @@ db.robot_commands.insertOne({
   errorMessage: null,
   degrees: 90.0
 });
+```
+Extract the _id from the result
+```
+let commandId = commandResult.insertedId;
+```
+Create robot_history collection (if it doesn't exist)
+```
+db.createCollection("robot_history");
+```
+Insert into robot_history, using the captured commandId
+```
+db.robot_history.insertOne({
+  commandId: commandId, // Use the captured _id
+  robotId: "TX-042",
+  commandType: "Rotate",
+  commandData: "x:10, y:25",
+  timestamp: new Date()
+});
+```
+this will return an objectId (_id) reltated to this command! and then use that to assign a commandId to the object
+ex: `67f7eda01f977caf9fd861e8`
+again, run `db.robot_commands.find()` or `db.robot_commands.find().pretty()`
 
+- to drop a table and remake datta use `db.robot_commands.drop();` etc...
+- or to drop the database `db.dropDatabase();`
+
+#### Ther are caveats
+- I would suggest building all the tables and then seeding the robot_statuses
+- then use the POST command to create new robots with data for better history retention
+and correlation to objectId/commandId 
+##### note:
+baked in mongodb _Id; this is something I learned recently and 
+as I am not a DBA I did not think about this design; I would restructure the objects more definitively had I known this - hence the reason the history robot model `RobotHistory.cs` has a field called `HistoryId`.
+
+
+```
 //Create robot history collection
 db.createCollection("robot_history");
 
 //insert into robot history collection
-db.robot_history.insertOne({
+<!-- db.robot_history.insertOne({
+  id: "67f77a452b4025e4e74befdd"
   robotId: "TX-042",
   commandId: 1,
   commandType: "Rotate",
   commandData: "x:10, y:25",
   Timestamp: new Date()
-});
-```
+}); -->
 
+```
 ### DATA for DB:
 - create a db for psql called robotdb ( can be named anything )
 https://www.youtube.com/watch?v=KuQUNHCeKCk

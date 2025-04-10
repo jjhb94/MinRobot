@@ -5,10 +5,12 @@ namespace MinRobot.Infrastructure.Database;
 public class PostgreSqlDbConnectionFactory : IGenericDbConnectionFactory
 {
     private readonly string _connectionString;
+    private readonly ILogger<PostgreSqlDbConnectionFactory> _logger;
 
-    public PostgreSqlDbConnectionFactory(string connectionString)
+    public PostgreSqlDbConnectionFactory(string connectionString, ILogger<PostgreSqlDbConnectionFactory> logger)
     {
             _connectionString = connectionString;
+            _logger = logger;
     }
     public async Task<IDbConnection> CreateConnectionAsync(CancellationToken cancellationToken = default)
     {
@@ -26,9 +28,8 @@ public class PostgreSqlDbConnectionFactory : IGenericDbConnectionFactory
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            Console.WriteLine(ex.StackTrace);
-            throw;
+            _logger?.LogError($"An error occurred with creating database connection: {ex.Message}");
+            throw new Exception("Failed to create a database connection.", ex);
         }
     }
 }

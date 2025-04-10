@@ -3,11 +3,13 @@ namespace MinRobot.Infrastructure.Repository;
 public class MongoDbRobotStatusRepository : IRobotStatusRepository
 {
     private readonly IMongoCollection<RobotStatus> _robotStatusesCollection;
+    private readonly ILogger<MongoDbRobotStatusRepository> _logger; // Add logger
 
-    public MongoDbRobotStatusRepository(IMongoDatabase database)
+    public MongoDbRobotStatusRepository(IMongoDatabase database, ILogger<MongoDbRobotStatusRepository> logger)
     {
         // Initialize the MongoDB collection for robot statuses
         _robotStatusesCollection = database.GetCollection<RobotStatus>("robot_statuses");
+        _logger = logger;
     }
 
     public async Task<IEnumerable<RobotStatus>> GetAllStatusesAsync(CancellationToken cancellationToken)
@@ -20,8 +22,8 @@ public class MongoDbRobotStatusRepository : IRobotStatusRepository
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error getting all statuses: {ex}");
-            throw;
+            _logger?.LogError($"Error getting all robot statuses: {ex.Message}"); // Log the error
+            throw new Exception("Error getting all robot statuses from MongoDB", ex);
         }
     }
 
