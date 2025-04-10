@@ -1,0 +1,53 @@
+name: .NET CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+      - develop
+  pull_request:
+    branches:
+      - main
+      - feature/*
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Setup .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore MinRobot/MinRobot.sln
+
+    # Build the project
+    - name: Build
+      # run: dotnet build --configuration Release --no-restore
+      run: dotnet build MinRobot/MinRobot.sln -c Release --no-restore
+
+    # Build tests
+    - name: Build tests
+      run: dotnet build MinRobotTests/Tests.csproj
+    # Run tests
+    - name: Run tests
+      run: dotnet test MinRobotTests/Tests.csproj --verbosity normal
+
+    # # Publish build artifacts # do this later Idk where to put ya
+    # - name: Publish artifacts
+    #   run: dotnet publish --configuration Release --output ./artifacts
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v3.1.2
+    #   with:
+    #     name: build-artifacts
+    #     path: ./artifacts

@@ -1,6 +1,6 @@
 //using Microsoft.AspNetCore.Mvc;
-//using MinRobot.Application.Dto;
-//using MinRobot.Application.Endpoints;
+//using MinRobot.Api.Dto;
+//using MinRobot.Api.Endpoints;
 //using System.Net;
 //using System.Threading;
 

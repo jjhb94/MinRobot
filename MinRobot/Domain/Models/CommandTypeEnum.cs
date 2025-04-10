@@ -12,5 +12,6 @@ public enum CommandTypeEnum
     PickUpItem,
     DropItem,
     ScanArea,
-    ReportStatus
+    ReportStatus,
+    Rotate
 }

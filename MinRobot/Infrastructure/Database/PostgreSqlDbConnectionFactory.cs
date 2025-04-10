@@ -1,8 +1,6 @@
-using System.Data;
-using MinRobot.Domain.Interfaces;
 using Npgsql;
 
-namespace MinRobot.Infrastructure.Factories;
+namespace MinRobot.Infrastructure.Database;
 
 public class PostgreSqlDbConnectionFactory : IGenericDbConnectionFactory
 {

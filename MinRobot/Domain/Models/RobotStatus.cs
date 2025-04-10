@@ -2,14 +2,28 @@ namespace MinRobot.Domain.Models;
 
 public class RobotStatus
 {
-    public string RobotId { get; set; } = default!;
-    public string Status { get; set; } = default!;
+    [BsonId]
+    [BsonElement("_id")] // Explicitly map _id
+    public ObjectId Id { get; set; }
 
-    public int BatteryLevel { get; set; } // Database is integer.
-    public int UptimeSeconds { get; set; }
-    public TimeSpan Uptime => TimeSpan.FromSeconds(UptimeSeconds);
-    public DateTime LastUpdated { get; set; }
+    [BsonElement("robotId")] // Explicitly map robotId
+    public required string RobotId { get; set; }
 
-    public decimal PositionX { get; set; } // Database is numeric.
-    public decimal PositionY { get; set; } // Database is numeric.
+    [BsonElement("status")] // Explicitly map status
+    public string Status { get; set; }
+
+    [BsonElement("batteryLevel")] // Explicitly map batteryLevel
+    public int BatteryLevel { get; set; }
+
+    [BsonElement("uptime")] // Explicitly map uptime
+    public int Uptime { get; set; }
+
+    [BsonElement("lastUpdated")] // Explicitly map lastUpdated
+    public System.DateTime LastUpdated { get; set; }
+
+    [BsonElement("positionX")] // Explicitly map positionX
+    public decimal PositionX { get; set; }
+
+    [BsonElement("positionY")] // Explicitly map positionY
+    public decimal PositionY { get; set; }
 }

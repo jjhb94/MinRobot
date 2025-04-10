@@ -1,6 +1,4 @@
-using System.Net;
-
-namespace MinRobot.Application.Dto;
+namespace MinRobot.Api.Dto;
 
 public class RobotStatusResponse<T>
 {

@@ -1,0 +1,10 @@
+global using System.Net;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.Extensions.DependencyInjection;
+global using MinRobot.Api.Dto;
+global using MinRobot.Api.Services;
+global using MinRobot.Api.Utilities;
+global using MinRobot.Domain.Models;
+global using Microsoft.Extensions.Options;
+global using MinRobot.Domain.Interfaces;

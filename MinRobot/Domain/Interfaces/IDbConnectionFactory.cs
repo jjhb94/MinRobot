@@ -1,5 +1,3 @@
-using System.Data;
-
 namespace MinRobot.Domain.Interfaces;
 
 public interface IDbConnectionFactory

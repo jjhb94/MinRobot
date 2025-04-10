@@ -24,10 +24,20 @@ factories/ repository pattern. Configure this connection in the appsettings.json
 
 #### Initialize MongoDb with data and users
 ```
+// 1. Create User
+use admin; // Switch to the admin database for user creation
 db.createUser({
   user: "robot_user",
   pwd: "robotlife",
-  roles: [{ role: "readWrite", db: "minrobot_db" }],
+  roles: [{ role: "readWrite", db: "minrobot_db" }]
+});
+
+// 2. Create Database and Collections
+use minrobot_db; // Switch to your application database
+db.createUser({
+  user: "robot_user",
+  pwd: "robotlife",
+  roles: [{ role: "readWrite", db: "minrobot_db" }]
 });
 
 db.createCollection("robot_statuses");
@@ -35,28 +45,55 @@ db.robot_statuses.insertMany([
   {
     robotId: "TX-010",
     status: "Online",
-    batteryLevel: 95.5,
+    batteryLevel: 95,
     uptime: 3600,
     lastUpdated: new Date(),
-    position: { x: 10.5, y: 0 }
+    positionX: 10.5,
+    positionY: 0
   },
   {
     robotId: "TX-027",
     status: "Offline",
-    batteryLevel: 10.0,
+    batteryLevel: 10,
     uptime: 0,
     lastUpdated: new Date(),
-    position: { x: 10.5, y: 25.0 }
+    positionX: 10.5,
+    positionY: 25
   },
   {
     robotId: "TX-042",
     status: "Online",
-    batteryLevel: 88.0,
+    batteryLevel: 88,
     uptime: 123456,
     lastUpdated: new Date(),
-    position: { x: 5.0, y: 15.0 }
-  },
+    positionX: 5,
+    positionY: 15
+  }
 ]);
+
+// Create robot_commands collection and insert data
+db.createCollection("robot_commands");
+db.robot_commands.insertOne({
+  robotId: "TX-042",
+  commandType: "Rotate",
+  commandData: "x:10, y:25",
+  createdAt: new Date(),
+  status: "pending",
+  errorMessage: null,
+  degrees: 90.0
+});
+
+//Create robot history collection
+db.createCollection("robot_history");
+
+//insert into robot history collection
+db.robot_history.insertOne({
+  robotId: "TX-042",
+  commandId: 1,
+  commandType: "Rotate",
+  commandData: "x:10, y:25",
+  Timestamp: new Date()
+});
 ```
 
 ### DATA for DB:
@@ -125,6 +162,7 @@ WHERE conname = 'chk_command_type';
 -- Verify the user permissions:
 \dp robot_commands;
 ```
-
+Need to login using Mongosh
+use admin
 
 update your appsettings with the db connection! 
