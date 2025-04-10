@@ -288,7 +288,15 @@ use admin
 
 update your appsettings with the db connection! 
 
+## Future State / alt approaches
 
 ### PostgreSQL
 a postgreSQL db is utilized in this application related to the Domain Interfaces / Infrastructure
 factories/ repository pattern. Configure this connection in the appsettings.json
+
+### CQRS Pattern
+implement this pattern without MediatR
+
+### Remove MOQ from testing
+https://dariusz-wozniak.github.io/fossed/library/moq
+it's an issue and a violation if GDPR and SHA-256 isn't so secure
