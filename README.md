@@ -11,10 +11,65 @@
 Program.cs at root of project contains Extensions for making endpoints easier to read.
 Endpoints Folder contains endpoint extensions with routes i.e. `base = /api ; api/status /api/status/{robotId}\`
 
+## How to run
+Assuming you have setup the db you would cd in to the `MinRobot` directory.
+make sure you have dotnet 8 installed. 
+run `dotnet run` 
+and then head to the `http://localhost:5127/swagger/index.html` to test the endpoints
+Again, I would recommend going through the database steps below (for MongoDb)
+and then doing a few Post commands passing a json body like so:
+```
+{
+  "robotId": "ex-123",
+  "commandType": "Rotate(90)",
+  "commandData": "rotate 90 degrees",
+  "status": "string"
+}
+```
+```
+{
+  "robotId": "ex-123",
+  "commandType": "MoveForward",
+  "commandData": "x:20, y:30",
+  "status": "string"
+}
+```
+#### allowed params for 
+- robotId: two letters followed by a dash followed by three numbers
+ex: `tx-042` not case sensitive here
+- commandType: CommandTypeEnum
+`{
+    MoveForward, 
+    MoveBackward,
+    TurnLeft,
+    TurnRight,
+    Stop,
+    StartCharging,
+    StopCharging,
+    PickUpItem,
+    DropItem,
+    ScanArea,
+    ReportStatus,
+    Rotate
+}
+`
+- commandData: loosely structured and can take anything
+if it contains an `"x: #, y: #"` format for coordiantes this will get mapped into a robot object
+- status: CommandStatusEnum 
+`{
+    Pending,
+    Executing,
+    Completed,
+    Failed,
+    Cancelled
+}
+`
+-commandId: this is a string that get's  passed and can recall history / update an existing command for a robot with a unique id ( related to the command issued)
+ex: 67f7f0461f977caf9fd861e9
+**note**: this property specifically should be refactored. This is why the data building and inserting is so important before this get's executed.
+I originally built this project to take advantage of a reltaional db - not something with abstract _id to manage every object. I would redo this and implement unique guids on every model for HistoryId and then utilize that in the endpoints/ service/ repository layers. Good learning experience - TODO: ^^
 
-### PostgreSQL
-a postgreSQL db is utilized in this application related to the Domain Interfaces / Infrastructure
-factories/ repository pattern. Configure this connection in the appsettings.json
+
 
 ### Docker (MongoDb)
 - make sure you have docker running (desktop or WSL2)
@@ -232,3 +287,8 @@ Need to login using Mongosh
 use admin
 
 update your appsettings with the db connection! 
+
+
+### PostgreSQL
+a postgreSQL db is utilized in this application related to the Domain Interfaces / Infrastructure
+factories/ repository pattern. Configure this connection in the appsettings.json
