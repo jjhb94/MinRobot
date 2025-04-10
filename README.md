@@ -147,7 +147,6 @@ and correlation to objectId/commandId
 baked in mongodb _Id; this is something I learned recently and 
 as I am not a DBA I did not think about this design; I would restructure the objects more definitively had I known this - hence the reason the history robot model `RobotHistory.cs` has a field called `HistoryId`.
 
-
 ```
 //Create robot history collection
 db.createCollection("robot_history");
