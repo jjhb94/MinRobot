@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "locationName": {
+      "value": "eus2"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "appName": {
+      "value": "minrobot"
+    },
+    "location": {
+      "value": "eastus2"
+    },
+    "instanceNumber": {
+      "value": "009" 
+    }
+  }
+}

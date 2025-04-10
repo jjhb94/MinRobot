@@ -1,0 +1,45 @@
+# name: MinRobot from DEVELOP
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#     - develop
+
+# env:
+#   AZURE_WEBAPP_NAME: localminrobotapi
+#   AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+  
+# jobs:
+#   publish:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v4
+    
+#     - name: Setup
+#       uses: actions/setup-dotnet@v4
+#       with:
+#         dotnet-version: 8.0.x
+        
+#     - name: Restore
+#       working-directory: ./MinRobot
+#       run: dotnet restore
+      
+#     - name: Build
+#       working-directory: ./MinRobot
+#       run: dotnet build --configuration Release --no-restore
+      
+#     - name: Test
+#       working-directory: ./MinRobotTests
+#       run: dotnet test --verbosity:minimal
+      
+#     - name: Publish
+#       run: dotnet publish ./MinRobot --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+      
+# #     - name: Deployment
+# #       uses: azure/webapps-deploy@v2
+# #       with:
+# #         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+# #         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+# #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

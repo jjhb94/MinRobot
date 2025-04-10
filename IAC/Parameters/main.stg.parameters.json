@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "functionWorkerRuntime": {
+            "value": "dotnet"
+        },
+        "storageSKU": {
+            "value": "Standard_LRS"
+        },
+        "tierSKU": {
+            "value": "Y1"
+        },
+        "company": {
+            "value": "robot"
+        },
+        "location": {
+            "value": "eastus2"
+        },
+        "locationName": {
+            "value": "eus2"
+        },
+        "appName": {
+            "value": "minrobot"
+        },
+        "instanceNumber": {
+            "value": "001"
+        },
+        "environment": {
+            "value": "stg"
+        },
+        "minrobotDb2": {
+            "value": "Data Source=();user id=;password=;"
+        },
+        "minrobotDb1": {
+            "value": "Data Source=();user id=;password=;"
+        }
+    }
+}
