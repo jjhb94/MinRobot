@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace MinRobot.Api.Dto
+﻿namespace MinRobot.Api.Dto
 {
     public class RobotCommandHistoryResponse<T>
     {

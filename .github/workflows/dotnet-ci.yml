@@ -39,11 +39,11 @@ jobs:
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
 
-    # Publish build artifacts
-    - name: Publish artifacts
-      run: dotnet publish --configuration Release --output ./artifacts
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3.1.2
-      with:
-        name: build-artifacts
-        path: ./artifacts
+    # # Publish build artifacts # do this later Idk where to put ya
+    # - name: Publish artifacts
+    #   run: dotnet publish --configuration Release --output ./artifacts
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v3.1.2
+    #   with:
+    #     name: build-artifacts
+    #     path: ./artifacts

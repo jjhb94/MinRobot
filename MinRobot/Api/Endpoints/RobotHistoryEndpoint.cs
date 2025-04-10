@@ -1,9 +1,3 @@
-using MinRobot.Api.Dto;
-using MinRobot.Api.Services;
-using MinRobot.Api.Utilities;
-using System.Net;
-using MinRobot.Domain.Models;
-
 namespace MinRobot.Api.Endpoints;
 
 public static class RobotHistoryEndpoint

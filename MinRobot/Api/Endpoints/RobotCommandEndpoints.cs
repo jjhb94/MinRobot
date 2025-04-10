@@ -1,9 +1,3 @@
-using MinRobot.Api.Dto;
-using MinRobot.Api.Services;
-using MinRobot.Api.Utilities;
-using MinRobot.Domain.Models;
-using System.Net;
-
 namespace MinRobot.Api.Endpoints;
 
 public static class RobotCommandEndpoints

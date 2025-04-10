@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace MinRobot.Api.Dto;
 
 public class RobotCommandResponse<T>

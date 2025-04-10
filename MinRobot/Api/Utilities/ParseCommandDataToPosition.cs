@@ -1,5 +1,4 @@
 using System.Globalization;
-using MinRobot.Domain.Models;
 
 namespace MinRobot.Api.Utilities;
 public static class ParseCommandDataToPosition

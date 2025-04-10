@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using MinRobot.Domain.Models;
-
 namespace MinRobot.Api.Dto;
 
 public class RobotCommandDto
