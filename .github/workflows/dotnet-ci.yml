@@ -29,15 +29,17 @@ jobs:
 
     # Restore dependencies
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore MinRobot/MinRobot/MinRobot.sln
 
     # Build the project
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      # run: dotnet build --configuration Release --no-restore
+      run: dotnet build MinRobot/MinRobot/MinRobot.sln Release --no-restore
+
 
     # Run tests
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test MinRobot/MinRobotTests/MinRobotTests.csproj --no-build --verbosity normal
 
     # # Publish build artifacts # do this later Idk where to put ya
     # - name: Publish artifacts
