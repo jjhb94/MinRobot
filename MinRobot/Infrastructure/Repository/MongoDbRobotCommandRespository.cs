@@ -1,3 +1,6 @@
+using MinRobot.Infrastructure.Serialization;
+using System;
+
 namespace MinRobot.Infrastructure.Repository;
 
 public class MongoDbRobotCommandRepository : IRobotCommandRepository
@@ -43,7 +46,9 @@ public class MongoDbRobotCommandRepository : IRobotCommandRepository
     {
         try
         {
-            var filter = Builders<RobotCommand>.Filter.Eq(c => c.Id, commandId);
+            var objectId = GuidObjectIdConverter.GetMatchingObjectId(commandId);
+
+            var filter = Builders<RobotCommand>.Filter.Eq(c => c.Id, objectId.ToString());
             return await _robotCommandsCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
         }
         catch (Exception ex)

@@ -1,4 +1,4 @@
-namespace MinRobot.Infrastructure.Repository;
+namespace MinRobot.Infrastructure.Database;
 
 public abstract class MongoRepositoryBase<T>
 {

@@ -45,23 +45,23 @@ public class DatabaseService
     //     await _robotStatusRepository.AddRobotStatusAsync(status, cancellationToken);
     // }
 
-    private async Task UpdateRobotLastUpdated(string robotId, string commandType, CancellationToken cancellationToken)
+    private async Task UpdateRobotLastUpdated(string robotId, string commandId, string commandType, CancellationToken cancellationToken)
     {
-        await _robotHistoryRepository.UpdateRobotStatusAndAddHistoryAsync(robotId, commandType, cancellationToken);
+        await _robotHistoryRepository.UpdateRobotStatusAndAddHistoryAsync(robotId, commandId, commandType, cancellationToken);
     }
     
     // TODO: for larger applications Create Service folder and put break services up
     public async Task<string> AddRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
     {
         var commandId = await _robotCommandRepository.AddRobotCommandAsync(command, cancellationToken);
-        await UpdateRobotLastUpdated(command.RobotId, command.CommandType, cancellationToken); // Add this
+        await UpdateRobotLastUpdated(command.RobotId, commandId, command.CommandType, cancellationToken); // Add this
         return commandId;
     }
 
     public async Task UpdateRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken)
     {
         await _robotCommandRepository.UpdateRobotCommandAsync(command, cancellationToken);
-        await UpdateRobotLastUpdated(command.RobotId, command.CommandType, cancellationToken);
+        //await UpdateRobotLastUpdated(command.RobotId, command.Id, command.CommandType, cancellationToken);
     }
 
     public async Task<RobotCommand?> GetRobotCommandByIdAsync(string commandId, CancellationToken cancellationToken)

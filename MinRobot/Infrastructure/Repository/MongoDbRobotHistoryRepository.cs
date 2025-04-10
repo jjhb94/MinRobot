@@ -52,7 +52,7 @@ public class MongoDbRobotHistoryRepository : IRobotHisotryRepository
             throw;
         }
     }
-    public async Task UpdateRobotStatusAndAddHistoryAsync(string robotId, string commandType, CancellationToken cancellationToken)
+    public async Task UpdateRobotStatusAndAddHistoryAsync(string robotId, string commandId, string commandType, CancellationToken cancellationToken)
     {
         try
         {
@@ -77,6 +77,7 @@ public class MongoDbRobotHistoryRepository : IRobotHisotryRepository
                 CommandTypeEnum commandTypeEnum = (CommandTypeEnum)Enum.Parse(typeof(CommandTypeEnum), commandType, true);
                 await _robotHistoryCollection.InsertOneAsync(new RobotHistory
                 {
+                    Id = commandId,
                     RobotId = robotId,
                     CommandType = commandTypeEnum,
                     CommandData = $"Last updated: {DateTime.UtcNow}",

@@ -1,6 +1,6 @@
 using MinRobot.Api.Configuration;
 
-namespace MinRobot.Infrastructure.Factories;
+namespace MinRobot.Infrastructure.Database;
 
 public class MongoDbConnectionFactory
 {
