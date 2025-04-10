@@ -43,7 +43,7 @@ jobs:
     - name: Publish artifacts
       run: dotnet publish --configuration Release --output ./artifacts
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: build-artifacts
         path: ./artifacts
