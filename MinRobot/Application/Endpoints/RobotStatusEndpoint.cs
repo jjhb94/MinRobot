@@ -1,6 +1,7 @@
 using System.Net;
 using MinRobot.Domain.Models;
 using MinRobot.Application.Dto;
+using MinRobot.Application.Services;
 
 namespace MinRobot.Application.Endpoints;
 

@@ -1,11 +1,7 @@
 using MinRobot.Domain.Models;
 using MinRobot.Domain.Interfaces;
 using MinRobot.Application.Dto;
-using Microsoft.Extensions.Options;
-using MinRobot.Application.Configuration;
-using MongoDB.Driver;
-using MinRobot.Infrastructure.Repository;
-namespace MinRobot.Application;
+namespace MinRobot.Application.Services;
 
 public class DatabaseService
 {

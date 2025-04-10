@@ -4,7 +4,7 @@ using MinRobot.Application.Configuration;
 using MongoDB.Bson.Serialization;
 using MinRobot.Infrastructure.Serialization;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
+using MinRobot.Application.Services;
 using MongoDB.Driver;
 
 namespace MinRobot.Application.Extensions;
