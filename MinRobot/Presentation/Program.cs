@@ -1,5 +1,5 @@
-using MinRobot.Application.Endpoints;
-using MinRobot.Application.Extensions;
+using MinRobot.Api.Endpoints;
+using MinRobot.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

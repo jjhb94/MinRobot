@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Models;
 
-namespace MinRobot.Application.Endpoints;
+namespace MinRobot.Api.Endpoints;
 
 public static class RobotApiHealthCheckEndpoint
 {

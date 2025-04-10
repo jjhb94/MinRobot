@@ -1,7 +1,7 @@
 using System.Globalization;
 using MinRobot.Domain.Models;
 
-namespace MinRobot.Application.Utilities;
+namespace MinRobot.Api.Utilities;
 public static class ParseCommandDataToPosition
 {
 

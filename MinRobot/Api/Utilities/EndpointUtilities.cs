@@ -1,13 +1,14 @@
 
 using System.Net;
-using MinRobot.Application.Dto;
+using System.Text.RegularExpressions;
+using MinRobot.Api.Dto;
 using MinRobot.Domain.Models;
 
-namespace MinRobot.Application.Utilities;
+namespace MinRobot.Api.Utilities;
 
 public  class EndpointUtilities
 {
-    public static (RobotCommand, IResult) ValidateAndMapCommand(int? commandId, RobotCommandDto commandDto)
+    public static (RobotCommand, IResult) ValidateAndMapCommand(string? commandId, RobotCommandDto commandDto)
     {
         // Input Validation
         if (string.IsNullOrEmpty(commandDto.RobotId) || string.IsNullOrEmpty(commandDto.CommandData) || string.IsNullOrEmpty(commandDto.Status))
@@ -78,7 +79,7 @@ public  class EndpointUtilities
         // Map RobotCommandDto to RobotCommand
         var command = new RobotCommand
         {
-            Id = commandId.ToString(), // Use provided commandId or default(0)
+            Id = commandId, // Use provided commandId or default(0)
             RobotId = commandDto.RobotId.ToUpper(),
             CommandType = commandDto.CommandType,
             CommandData = commandDto.CommandData,
@@ -91,14 +92,14 @@ public  class EndpointUtilities
 
     public static IResult ValidateCommandId(string commandId)
     {
-        // Validate commandId is a positive integer
-        if (!int.TryParse(commandId, out int parsedCommandId) || parsedCommandId <= 0)
+        // Validate commandId is a 24-character hexadecimal string
+        if (string.IsNullOrEmpty(commandId) || !Regex.IsMatch(commandId, "^[0-9a-fA-F]{24}$"))
         {
             return Results.BadRequest(new RobotCommandResponse<string>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { "Invalid commandId. Must be a positive integer." }
+                ErrorMessages = new List<string> { "Invalid commandId. Must be a 24-character hexadecimal string." }
             });
         }
         return null!;
@@ -106,7 +107,7 @@ public  class EndpointUtilities
     public static bool IsValidRobotId(string robotId)
     {
         // Ensure RobotId matches the format "TX-123"
-        return !string.IsNullOrEmpty(robotId) && System.Text.RegularExpressions.Regex.IsMatch(robotId, @"^[A-Z]{2}-\d+$");
+        return !string.IsNullOrEmpty(robotId) && Regex.IsMatch(robotId, @"^[A-Z]{2}-\d+$");
     }
 
     public static IResult HandleException(string message, Exception ex)

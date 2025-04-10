@@ -1,5 +1,5 @@
 using MongoDB.Driver;
-using MinRobot.Application.Configuration;
+using MinRobot.Api.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace MinRobot.Infrastructure.Factories;

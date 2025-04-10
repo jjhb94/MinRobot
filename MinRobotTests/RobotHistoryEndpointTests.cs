@@ -1,7 +1,7 @@
 // using Xunit;
 // using Moq;
-// using MinRobot.Application.Endpoints;
-// using MinRobot.Application.Dto;
+// using MinRobot.Api.Endpoints;
+// using MinRobot.Api.Dto;
 // using MinRobot.Domain.Models;
 // using Microsoft.AspNetCore.Http;
 // using System.Net;
@@ -9,7 +9,7 @@
 // using System.Collections.Generic;
 // using System.Linq;
 // using System.Threading.Tasks;
-// using MinRobot.Application;
+// using MinRobot.Api;
 
 // namespace MinRobot.Tests
 // {

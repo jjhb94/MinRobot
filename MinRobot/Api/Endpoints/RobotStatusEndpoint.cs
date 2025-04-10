@@ -1,9 +1,9 @@
 using System.Net;
 using MinRobot.Domain.Models;
-using MinRobot.Application.Dto;
-using MinRobot.Application.Services;
+using MinRobot.Api.Dto;
+using MinRobot.Api.Services;
 
-namespace MinRobot.Application.Endpoints;
+namespace MinRobot.Api.Endpoints;
 
 public static class RobotStatusEndpoint
 {

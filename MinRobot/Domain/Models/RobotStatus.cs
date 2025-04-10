@@ -10,7 +10,7 @@ public class RobotStatus
     public ObjectId Id { get; set; }
 
     [BsonElement("robotId")] // Explicitly map robotId
-    public string RobotId { get; set; }
+    public required string RobotId { get; set; }
 
     [BsonElement("status")] // Explicitly map status
     public string Status { get; set; }

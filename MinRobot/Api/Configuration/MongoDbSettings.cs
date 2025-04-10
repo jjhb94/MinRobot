@@ -1,5 +1,5 @@
 // MinRobot.Application/Configuration/MongoDbSettings.cs
-namespace MinRobot.Application.Configuration
+namespace MinRobot.Api.Configuration
 {
     public class MongoDbSettings
     {

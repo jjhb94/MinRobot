@@ -1,13 +1,13 @@
 using MinRobot.Domain.Interfaces;
 using MinRobot.Infrastructure.Repository;
-using MinRobot.Application.Configuration;
+using MinRobot.Api.Configuration;
 using MongoDB.Bson.Serialization;
 using MinRobot.Infrastructure.Serialization;
 using Microsoft.Extensions.Options;
-using MinRobot.Application.Services;
+using MinRobot.Api.Services;
 using MongoDB.Driver;
 
-namespace MinRobot.Application.Extensions;
+namespace MinRobot.Api.Extensions;
 
 public static class ServiceCollectionExtensions
 {

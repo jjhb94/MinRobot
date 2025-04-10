@@ -1,10 +1,10 @@
-using MinRobot.Application.Dto;
-using MinRobot.Application.Services;
-using MinRobot.Application.Utilities;
+using MinRobot.Api.Dto;
+using MinRobot.Api.Services;
+using MinRobot.Api.Utilities;
 using MinRobot.Domain.Models;
 using System.Net;
 
-namespace MinRobot.Application.Endpoints;
+namespace MinRobot.Api.Endpoints;
 
 public static class RobotCommandEndpoints
 {
@@ -52,7 +52,7 @@ public static class RobotCommandEndpoints
         }
     }
 
-    private static async Task<IResult> PutRobotCommandAsync(int commandId, RobotCommandDto commandDto, DatabaseService db, CancellationToken cancellation)
+    private static async Task<IResult> PutRobotCommandAsync(string commandId, RobotCommandDto commandDto, DatabaseService db, CancellationToken cancellation)
     {
         try
         {

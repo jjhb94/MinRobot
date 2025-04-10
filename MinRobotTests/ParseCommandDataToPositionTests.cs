@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using MinRobot.Application.Utilities;
+using MinRobot.Api.Utilities;
 using MinRobot.Domain.Models;
 using Xunit;
 
@@ -14,9 +14,15 @@ namespace MinRobotTests.Utilities
             // Arrange
             var command = new RobotCommand
             {
-                CommandData = "x:10.5,y:20.3"
+                CommandType = "MoveRight",
+                CommandData = "x:10.5,y:20.3",
+                Status = "Active"
+
             };
-            var robotStatus = new RobotStatus();
+            var robotStatus = new RobotStatus()
+            {
+                RobotId = "TX-123" // Required property
+            };
 
             // Act
             var updatedStatus = ParseCommandDataToPosition.ProcessCommandAndUpdateStatus(command, robotStatus);
@@ -32,9 +38,11 @@ namespace MinRobotTests.Utilities
             // Arrange
             var command = new RobotCommand
             {
-                CommandData = "x:abc,y:def"
+                CommandType = "PickUpItem",
+                CommandData = "x:abc,y:def",
+                Status = "Active"
             };
-            var robotStatus = new RobotStatus();
+            var robotStatus = new RobotStatus { RobotId = "TX-123" }; // Required property}
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
@@ -48,9 +56,11 @@ namespace MinRobotTests.Utilities
             // Arrange
             var command = new RobotCommand
             {
-                CommandData = "x:10.5" // Invalid format: Missing the y-coordinate
+                CommandType = "ReportStatus",
+                CommandData = "x:10.5", // Invalid format: Missing the y-coordinate
+                Status = "Active"
             };
-            var robotStatus = new RobotStatus();
+            var robotStatus = new RobotStatus { RobotId = "TX-123" }; // Required property};
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
@@ -66,10 +76,13 @@ namespace MinRobotTests.Utilities
             // Arrange
             var command = new RobotCommand
             {
-                CommandData = null
+                CommandType = "Stop",
+                CommandData = string.Empty,
+                Status = "Active"
             };
             var robotStatus = new RobotStatus
             {
+                RobotId = "TX-123", // Required property
                 PositionX = 5.0m,
                 PositionY = 10.0m
             };

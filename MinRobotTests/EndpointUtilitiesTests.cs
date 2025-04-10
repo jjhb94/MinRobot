@@ -1,6 +1,8 @@
+using System.Diagnostics.Metrics;
+using System;
 using System.Net;
-using MinRobot.Application.Dto;
-using MinRobot.Application.Utilities;
+using MinRobot.Api.Dto;
+using MinRobot.Api.Utilities;
 using MinRobot.Domain.Models;
 using Xunit;
 
@@ -13,10 +15,10 @@ public class EndpointUtilitiesTests
         // Arrange
         var commandDto = new RobotCommandDto
         {
-            RobotId = null,
-            CommandData = null,
-            Status = null,
-            CommandType = null
+            // RobotId = "null",
+            // CommandData = null,
+            // Status = null,
+            // CommandType = null
         };
 
         // Act
@@ -46,7 +48,7 @@ public class EndpointUtilitiesTests
         };
 
         // Act
-        var (command, result) = EndpointUtilities.ValidateAndMapCommand(1, commandDto);
+        var (command, result) = EndpointUtilities.ValidateAndMapCommand("67f76119c4247fa785f18150", commandDto);
 
         // Assert
         Assert.Null(command);
@@ -71,7 +73,7 @@ public class EndpointUtilitiesTests
         };
 
         // Act
-        var (command, result) = EndpointUtilities.ValidateAndMapCommand(1, commandDto);
+        var (command, result) = EndpointUtilities.ValidateAndMapCommand("67f76119c4247fa785f18150", commandDto);
 
         // Assert
         Assert.NotNull(command); // Ensure command is not null
@@ -99,7 +101,7 @@ public class EndpointUtilitiesTests
         // Extract the response body from the IResult
         var response = result as Microsoft.AspNetCore.Http.HttpResults.BadRequest<RobotCommandResponse<string>>;
         Assert.NotNull(response);
-        Assert.Contains("Invalid commandId. Must be a positive integer.", response.Value.ErrorMessages);
+        Assert.Contains("Invalid commandId. Must be a 24-character hexadecimal string.", response.Value.ErrorMessages);
     }
 
 
@@ -107,7 +109,12 @@ public class EndpointUtilitiesTests
     public void ValidateCommandId_ShouldReturnNull_WhenValidCommandId()
     {
         // Arrange
-        var validCommandId = "123";
+        var validCommandId = "67f76119c4247fa785f18150";
+        // ObjectId('67f76119c4247fa785f18150') in mongosh, it's the string representation of that 12-byte ObjectId.
+        // The string that is contained within the parenthesis is the hexadecimal representation of the ObjectId.
+        // A 4-byte timestamp (seconds since the Unix epoch).
+        // A 5 - byte random value.
+        // A 3 - byte counter.
 
         // Act
         var result = EndpointUtilities.ValidateCommandId(validCommandId);

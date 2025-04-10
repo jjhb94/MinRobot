@@ -1,10 +1,10 @@
-using MinRobot.Application.Dto;
-using MinRobot.Application.Services;
-using MinRobot.Application.Utilities;
+using MinRobot.Api.Dto;
+using MinRobot.Api.Services;
+using MinRobot.Api.Utilities;
 using System.Net;
 using MinRobot.Domain.Models;
 
-namespace MinRobot.Application.Endpoints;
+namespace MinRobot.Api.Endpoints;
 
 public static class RobotHistoryEndpoint
 {

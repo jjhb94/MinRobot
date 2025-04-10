@@ -1,7 +1,7 @@
 using MinRobot.Domain.Models;
 using MinRobot.Domain.Interfaces;
-using MinRobot.Application.Dto;
-namespace MinRobot.Application.Services;
+using MinRobot.Api.Dto;
+namespace MinRobot.Api.Services;
 
 public class DatabaseService
 {

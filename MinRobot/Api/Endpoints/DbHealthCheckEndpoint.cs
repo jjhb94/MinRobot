@@ -1,13 +1,13 @@
-using MinRobot.Application.Dto;
-using MinRobot.Application.Utilities;
+using MinRobot.Api.Dto;
+using MinRobot.Api.Utilities;
 using System.Net;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
-using MinRobot.Application.Configuration;
+using MinRobot.Api.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace MinRobot.Application.Endpoints;
+namespace MinRobot.Api.Endpoints;
 
 public static class DbHealthEndpoint
 {
