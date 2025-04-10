@@ -1,5 +1,3 @@
-using System.Diagnostics.Metrics;
-using System;
 using System.Net;
 using MinRobot.Api.Dto;
 using MinRobot.Api.Utilities;
@@ -31,6 +29,8 @@ public class EndpointUtilitiesTests
         // Extract the response body from the IResult
         var response = result as Microsoft.AspNetCore.Http.HttpResults.BadRequest<RobotCommandResponse<string>>;
         Assert.NotNull(response);
+        Assert.NotNull(response.Value);
+        Assert.NotNull(response.Value.ErrorMessages);
         Assert.Contains("RobotId, CommandData, and Status are required.", response.Value.ErrorMessages);
     }
 
@@ -57,6 +57,7 @@ public class EndpointUtilitiesTests
         // Extract the response body from the IResult
         var response = result as Microsoft.AspNetCore.Http.HttpResults.BadRequest<RobotCommandResponse<string>>;
         Assert.NotNull(response);
+        Assert.NotNull(response.Value);
         Assert.Contains("Invalid CommandType.", response.Value.ErrorMessages);
     }
 
