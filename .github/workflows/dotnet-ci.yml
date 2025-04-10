@@ -36,10 +36,12 @@ jobs:
       # run: dotnet build --configuration Release --no-restore
       run: dotnet build MinRobot/MinRobot.sln -c Release --no-restore
 
-
+    # Build tests
+    - name: Build tests
+      run: dotnet build MinRobotTests/Tests.csproj
     # Run tests
     - name: Run tests
-      run: dotnet test MinRobotTests/Tests.csproj --no-build --verbosity normal
+      run: dotnet test MinRobotTests/Tests.csproj --verbosity normal
 
     # # Publish build artifacts # do this later Idk where to put ya
     # - name: Publish artifacts
