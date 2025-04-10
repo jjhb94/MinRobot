@@ -23,12 +23,12 @@ public class DatabaseService
     {
         try
         {
-            Console.WriteLine("Getting all statuses");
+            _logger ?.LogInformation("Getting all statuses"); // Log the action
             return await _robotStatusRepository.GetAllStatusesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error getting all statuses: {ex}");
+            _logger ?.LogError($"Error getting all statuses: {ex.Message}"); // Log the error
             throw;
         }
     }
