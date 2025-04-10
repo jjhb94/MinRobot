@@ -10,11 +10,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("MongoDBApi", policy => 
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000", "https://yourfrontend.com")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -22,13 +23,14 @@ builder.Services.AddCors(options =>
 // Will this switch automatically? // Maybe put this in it's own extension
 // needed to utilize appsettings
 // builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-Console.WriteLine($"[DEBUG] Postgres connection string: {builder.Configuration.GetConnectionString("PostgreSqlConnection")}");
+// Console.WriteLine($"[DEBUG] Postgres connection string: {builder.Configuration.GetConnectionString("PostgreSqlConnection")}");
 
-builder.Services.AddApplicationServices(builder.Configuration);
+var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
+builder.Services.AddApplicationServices(builder.Configuration, logger);
 
 var app = builder.Build();
 
-app.UseCors();
+app.UseCors("MongoDBApi");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -41,9 +43,7 @@ app.UseHttpsRedirection();
 app.MapRobotStatusEndpoints(); // use extensions here to add endpoints! enhances readability
 app.MapRobotCommandEndpoints(); // use extensions here to add endpoints! enhances readability
 app.MapRobotHistoryEndpoint(); // use extensions here to add endpoints! enhances readability
-app.Run();
+app.MapDbHealthEndpoint();
+app.MapHealthCheckEndpoint();
 
-// record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-// {
-//     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-// }
+app.Run();

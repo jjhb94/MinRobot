@@ -1,5 +1,6 @@
 using MinRobot.Application.Dto;
-using MinRobot.Api.Utilities; 
+using MinRobot.Application.Utilities;
+using MinRobot.Domain.Models;
 using System.Net;
 
 namespace MinRobot.Application.Endpoints;
@@ -19,7 +20,7 @@ public static class RobotCommandEndpoints
     {
         try
         {
-            if (!EndpointUtilities.IsValidRobotId(commandDto.RobotId))
+            if (!EndpointUtilities.IsValidRobotId(commandDto.RobotId.ToUpper()))
             {
                 return Results.BadRequest(new RobotCommandResponse<RobotCommand>
                 {
@@ -31,36 +32,13 @@ public static class RobotCommandEndpoints
 
             var (command, errorResult) = EndpointUtilities.ValidateAndMapCommand(null, commandDto);
             if (errorResult != null) return errorResult;
-
-            // handle rotation commands
-            if (command.CommandType.ToLower().StartsWith("rotate("))
-            {
-                // Extract the degree value
-                string degreesString = command.CommandType.Substring(7, command.CommandType.Length - 8); // Remove "Rotate(" and ")"
-                //Console.WriteLine($"Degrees String: {degreesString}"); // Debugging line
-                if (double.TryParse(degreesString, out double degrees))
-                {
-                    // Store the degrees in the command data or a new field
-                    command.CommandData = $"Degrees:{degrees}"; // Store in command data for example
-                    command.CommandType = "Rotate"; // Store generic rotate command.
-                    command.Degrees = degrees;
-                }
-                else
-                {
-                    return Results.BadRequest(new RobotCommandResponse<RobotCommand>
-                    {
-                        IsSuccess = false,
-                        StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = new List<string> { "Invalid rotation degrees." }
-                    });
-                }
-            }
-
+            //RobotStatus commandData = ParseCommandDataToPosition.ProcessCommandAndUpdateStatus(command, command.Status);
+            // TODO: update the response to store x y coordinates from the RobotCommand data object to RobotStatus (robotId, robot.x, robot.y)
 
             var commandId = await db.AddRobotCommandAsync(command, cancellation);
-            command.CommandId = commandId;
+            command.Id = commandId.ToString();
 
-            return Results.Created($"/api/command/{command.CommandId}", new RobotCommandResponse<RobotCommand>
+            return Results.Created($"/api/command/{command.Id}", new RobotCommandResponse<RobotCommand>
             {
                 Data = command,
                 IsSuccess = true,
@@ -77,7 +55,7 @@ public static class RobotCommandEndpoints
     {
         try
         {
-            if (!EndpointUtilities.IsValidRobotId(commandDto.RobotId))
+            if (!EndpointUtilities.IsValidRobotId(commandDto.RobotId.ToUpper()))
             {
                 return Results.BadRequest(new RobotCommandResponse<RobotCommand>
                 {
@@ -105,7 +83,7 @@ public static class RobotCommandEndpoints
         }
     }
 
-    private static async Task<IResult> GetRobotCommandAsync(int commandId, DatabaseService db, CancellationToken cancellation)
+    private static async Task<IResult> GetRobotCommandAsync(string commandId, DatabaseService db, CancellationToken cancellation)
     {
         try
         {

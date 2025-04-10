@@ -1,5 +1,5 @@
 using MinRobot.Application.Dto;
-using MinRobot.Api.Utilities;
+using MinRobot.Application.Utilities;
 using System.Net;
 using MinRobot.Domain.Models;
 
@@ -31,7 +31,7 @@ public static class RobotHistoryEndpoint
             var dtoHistory = history.Select(h => new RobotCommandHistoryDto
             {
                 CommandId = h.CommandId,
-                CommandType = h.CommandType,
+                CommandType = h.CommandType.ToString(),
                 CommandData = h.CommandData
             });
 

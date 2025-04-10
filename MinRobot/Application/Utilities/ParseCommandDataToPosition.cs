@@ -1,14 +1,39 @@
-// private (decimal X, decimal Y)? ParsePositionData(string commandData)
-// {
-//     var positionRegex = new Regex(@"x:(\d+),\s*y:(\d+)", RegexOptions.IgnoreCase);
-//     var match = positionRegex.Match(commandData);
+using System.Globalization;
+using MinRobot.Domain.Models;
 
-//     if (match.Success)
-//     {
-//         var x = decimal.Parse(match.Groups[1].Value);
-//         var y = decimal.Parse(match.Groups[2].Value);
-//         return (x, y);
-//     }
+namespace MinRobot.Application.Utilities;
+public static class ParseCommandDataToPosition
+{
 
-//     return null; // No position data found
-// }
+    public static RobotStatus ProcessCommandAndUpdateStatus(RobotCommand command, RobotStatus robotStatus)
+    {
+        if (command.CommandData != null && command.CommandData.StartsWith("x:"))
+        {
+            string[] coordinates = command.CommandData.Split(',');
+
+            if (coordinates.Length == 2)
+            {
+                string xString = coordinates[0].Substring(2); // Remove "x:"
+                string yString = coordinates[1].Substring(2); // Remove "y:"
+
+                if (decimal.TryParse(xString, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal x) &&
+                    decimal.TryParse(yString, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal y))
+                {
+                    robotStatus.PositionX = x;
+                    robotStatus.PositionY = y;
+                }
+                else
+                {
+
+                    throw new ArgumentException("Invalid coordinates in commandData.");
+                }
+            }
+            else
+            {
+
+                throw new ArgumentException("Invalid commandData format.");
+            }
+        }
+        return robotStatus;
+    }
+}

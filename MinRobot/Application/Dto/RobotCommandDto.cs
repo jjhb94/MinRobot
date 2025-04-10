@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MinRobot.Domain.Models;
 
 namespace MinRobot.Application.Dto;
 
