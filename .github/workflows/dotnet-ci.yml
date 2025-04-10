@@ -19,11 +19,11 @@ jobs:
     steps:
     # Checkout the code
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Setup .NET
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
@@ -34,7 +34,7 @@ jobs:
     # Build the project
     - name: Build
       # run: dotnet build --configuration Release --no-restore
-      run: dotnet build MinRobot/MinRobot.sln Release --no-restore
+      run: dotnet build MinRobot/MinRobot.sln -c Release --no-restore
 
 
     # Run tests
