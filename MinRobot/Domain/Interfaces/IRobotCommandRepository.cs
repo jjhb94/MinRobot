@@ -1,5 +1,4 @@
-using MinRobot.Domain.Models;
-// IRobotCommandRepository.cs
+namespace MinRobot.Domain.Interfaces;
 public interface IRobotCommandRepository {
     Task<string> AddRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken);
     Task UpdateRobotCommandAsync(RobotCommand command, CancellationToken cancellationToken);

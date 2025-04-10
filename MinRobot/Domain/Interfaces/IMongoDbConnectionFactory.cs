@@ -1,5 +1,3 @@
-using MongoDB.Driver;
-
 namespace MinRobot.Infrastructure.Repository;
 
 public abstract class MongoRepositoryBase<T>

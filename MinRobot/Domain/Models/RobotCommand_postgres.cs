@@ -1,4 +1,3 @@
-using MinRobot.Domain.Models;
 namespace MinRobot.Domain.Models;
 
 public class RobotCommand_postgres

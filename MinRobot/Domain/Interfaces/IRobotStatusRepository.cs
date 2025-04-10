@@ -1,7 +1,3 @@
-using MinRobot.Domain.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace MinRobot.Domain.Interfaces
 {
     public interface IRobotStatusRepository
