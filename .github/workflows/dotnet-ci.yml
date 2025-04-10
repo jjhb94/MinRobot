@@ -39,7 +39,7 @@ jobs:
 
     # Run tests
     - name: Run tests
-      run: dotnet test MinRobotTests/MinRobotTests.csproj --no-build --verbosity normal
+      run: dotnet test MinRobotTests/Tests.csproj --no-build --verbosity normal
 
     # # Publish build artifacts # do this later Idk where to put ya
     # - name: Publish artifacts
