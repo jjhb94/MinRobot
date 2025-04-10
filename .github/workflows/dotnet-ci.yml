@@ -1,0 +1,49 @@
+name: .NET CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+      - develop
+  pull_request:
+    branches:
+      - main
+      - feature/*
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Setup .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    # Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Build the project
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    # Run tests
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+    # Publish build artifacts
+    - name: Publish artifacts
+      run: dotnet publish --configuration Release --output ./artifacts
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: ./artifacts
